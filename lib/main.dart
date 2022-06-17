@@ -1,8 +1,7 @@
 import 'package:english_words/english_words.dart';
 import 'package:flutter/material.dart';
+import 'package:mobile/Widget/pokemon_card.dart';
 import 'Components/appbar_bar.dart';
-import 'Components/appbar_searchpokemon.dart';
-import 'Widget/pokemon_card.dart';
 
 void main() {
   runApp(const MyApp());
@@ -17,18 +16,7 @@ class MyApp extends StatelessWidget {
       title: 'Welcome to Flutter',
       home: Scaffold(
         appBar: const Appbar(),
-        body: SingleChildScrollView(
-          scrollDirection: Axis.vertical,
-          child: Column(children: [
-            const SearchPokemon(),
-            Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: const [PokeMonCard(), PokeMonCard(), PokeMonCard()]),
-            Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: const [PokeMonCard(), PokeMonCard(), PokeMonCard()]),
-          ]),
-        ),
+        body: PokeMonCard(),
         backgroundColor: const Color(0xffF7F7F7),
       ),
     );

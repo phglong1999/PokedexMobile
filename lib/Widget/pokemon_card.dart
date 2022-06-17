@@ -6,6 +6,10 @@ import 'dart:convert';
 
 import 'package:mobile/Models/pokemon.dart';
 
+extension HexString on String {
+  int getHexValue() => int.parse(this);
+}
+
 Future<Pokemon> getListPokemon() async {
   final response =
       await http.get(Uri.parse('https://pokeapi.co/api/v2/pokemon/25'));
@@ -23,45 +27,37 @@ Future<Pokemon> getListPokemon() async {
 
 class PokeMonCard extends StatelessWidget {
   const PokeMonCard({Key? key}) : super(key: key);
-
   @override
   Widget build(BuildContext context) {
-    return Card(
-      borderOnForeground: true,
-      shape: const RoundedRectangleBorder(
-          side: BorderSide(width: 1.0, color: Color(0xffF9CF30))),
-      child: Column(
-        // ignore: prefer_const_literals_to_create_immutables
-        children: [
-          SizedBox(
-            width: MediaQuery.of(context).size.width / 3 - 16,
-            child: Column(children: [
-              Text(
-                "#25",
-                style: TextStyle(
-                  color: Color(0xffF9CF30),
-                ),
-                textAlign: TextAlign.left,
-              ),
-              const Image(
-                image: NetworkImage(
-                    "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/25.png"),
-              ),
-              Container(
-                color: Colors.red,
-                width: MediaQuery.of(context).size.width,
-                child: Text(
-                  "#25",
-                  style: TextStyle(
-                    color: Color(0xffF9CF30),
+    var color = {"electric": "0xffF57D31"};
+    var x = color["electric"]!.getHexValue();
+    return GridView.builder(
+        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: 3, childAspectRatio: 1),
+        itemCount: 50,
+        itemBuilder: (BuildContext ctx, index) {
+          return Container(
+              margin: const EdgeInsets.only(
+                  left: 15, top: 10, bottom: 10, right: 15),
+              child: Column(
+                children: [
+                  SizedBox(
+                      width: MediaQuery.of(context).size.width,
+                      child: Text(
+                        "#25",
+                        style: TextStyle(
+                          color: Color(x),
+                        ),
+                        textAlign: TextAlign.left,
+                      )),
+                  const Expanded(
+                    child: Image(
+                      image: NetworkImage(
+                          "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/25.png"),
+                    ),
                   ),
-                  textAlign: TextAlign.left,
-                ),
-              )
-            ]),
-          )
-        ],
-      ),
-    );
+                ],
+              ));
+        });
   }
 }
