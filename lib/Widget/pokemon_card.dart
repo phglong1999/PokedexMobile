@@ -37,6 +37,7 @@ class PokeMonCard extends StatelessWidget {
         itemCount: 50,
         itemBuilder: (BuildContext ctx, index) {
           return Container(
+              decoration: BoxDecoration(border: Border.all(color: Color(x))),
               margin: const EdgeInsets.only(
                   left: 15, top: 10, bottom: 10, right: 15),
               child: Column(
