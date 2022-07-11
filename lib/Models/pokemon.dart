@@ -30,7 +30,7 @@ class Types {
   }
 }
 // class Sprites{
-// final 
+// final
 // }
 // class other {
 //   final Oficialartwork oficialartwork;
@@ -42,4 +42,7 @@ class Types {
 //   final String front_default;
 //   // ignore: non_constant_identifier_names
 //   const Oficialartwork({required this.front_default});
+//   factory Oficialartwork.fromJson(Map<String, dynamic> json) {
+//     return Oficialartwork(front_default: json['name']);
+//   }
 // }

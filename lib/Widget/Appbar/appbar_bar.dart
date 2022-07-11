@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../Widget/text_widget.dart';
+import '../text_widget.dart';
 
 class Appbar extends StatelessWidget implements PreferredSizeWidget {
   const Appbar({Key? key}) : super(key: key);

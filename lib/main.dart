@@ -1,7 +1,7 @@
-import 'package:english_words/english_words.dart';
 import 'package:flutter/material.dart';
-import 'package:mobile/Widget/pokemon_card.dart';
-import 'Components/appbar_bar.dart';
+import 'package:mobile/Widget/Body/body_searchpokemon.dart';
+import 'Widget/Appbar/appbar_bar.dart';
+import 'Widget/Pokemon/list_pokemon_card.dart';
 
 void main() {
   runApp(const MyApp());
@@ -13,44 +13,15 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'Welcome to Flutter',
+      title: 'Pokedex',
       home: Scaffold(
         appBar: const Appbar(),
-        body: PokeMonCard(),
+        body: Column(children: const <Widget>[
+          SearchPokemons(),
+          Expanded(child: ListPokeMonCard())
+        ]),
         backgroundColor: const Color(0xffF7F7F7),
       ),
-    );
-  }
-}
-
-class RandomWords extends StatefulWidget {
-  const RandomWords({Key? key}) : super(key: key);
-
-  @override
-  State<RandomWords> createState() => _RandomWordsState();
-}
-
-class _RandomWordsState extends State<RandomWords> {
-  final _suggestions = <WordPair>[];
-  final _biggerFont = const TextStyle(fontSize: 18);
-  @override
-  Widget build(BuildContext context) {
-    return ListView.builder(
-      padding: const EdgeInsets.all(16.0),
-      itemBuilder: /*1*/ (context, i) {
-        if (i.isOdd) return const Divider(); /*2*/
-
-        final index = i ~/ 2; /*3*/
-        if (index >= _suggestions.length) {
-          _suggestions.addAll(generateWordPairs().take(10)); /*4*/
-        }
-        return ListTile(
-          title: Text(
-            _suggestions[index].asPascalCase,
-            style: _biggerFont,
-          ),
-        );
-      },
     );
   }
 }
