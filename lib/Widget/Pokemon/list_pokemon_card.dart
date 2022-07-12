@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:mobile/Models/pokemon.dart';
 import 'dart:convert';
 
 import 'package:mobile/Widget/Pokemon/pokemon_card.dart';
@@ -10,21 +11,6 @@ import '../../Models/list_pokemon.dart';
 
 extension HexString on String {
   int getHexValue() => int.parse(this);
-}
-
-Future<ListPokemon> getListPokemon() async {
-  final response = await http
-      .get(Uri.parse('https://pokeapi.co/api/v2/pokemon?offset=25&limit=25'));
-
-  if (response.statusCode == 200) {
-    // If the server did return a 200 OK response,
-    // then parse the JSON.
-    return ListPokemon.fromJson(jsonDecode(response.body));
-  } else {
-    // If the server did not return a 200 OK response,
-    // then throw an exception.
-    throw Exception('Failed to load pokemon');
-  }
 }
 
 class ListPokeMonCard extends StatefulWidget {
@@ -54,18 +40,64 @@ class _ListPokeMonCardState extends State<ListPokeMonCard> {
   //     }
   //   });
   // }
+  Future<Pokemon> getListPokemon() async {
+    // var response = await http.get(
+    //     Uri.parse('https://pokeapi.co/api/v2/pokemon?limit=100000&offset=0'));
+    final response =
+        await http.get(Uri.parse('https://pokeapi.co/api/v2/pokemon/50'));
+
+    if (response.statusCode == 200) {
+      // final pokemons = jsonDecode(response.body);
+      // pokemons["results"].forEach( (item)=> {
+      //   response = await getPokemon(item["url"]);
+      // });
+      return Pokemon.fromJson(jsonDecode(response.body));
+    } else {
+      throw Exception('Failed to load pokemon');
+    }
+  }
+
+  Future<Pokemon> getPokemon(url) async {
+    var response = await http.get(Uri.parse(url));
+    // final response =
+    //     await http.get(Uri.parse('https://pokeapi.co/api/v2/pokemon/50'));
+
+    if (response.statusCode == 200) {
+      return Pokemon.fromJson(jsonDecode(response.body));
+    } else {
+      throw Exception('Failed to load pokemon');
+    }
+  }
+
+  late Future<Pokemon> pokemon;
+
+  @override
+  void initState() {
+    super.initState();
+    pokemon = getListPokemon();
+  }
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<Album> GridView.builder(
-        // controller: _scrollController,
-        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: 3, childAspectRatio: 1),
-        itemCount: 25,
-        itemBuilder: (BuildContext ctx, index) {
-          return PokeMonCard(
-            pokemon: widget.color,
-          );
+    return FutureBuilder<Pokemon>(
+        future: pokemon,
+        builder: (context, snapshot) {
+          if (snapshot.hasData) {
+            return GridView.builder(
+                // controller: _scrollController,
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 3, childAspectRatio: 1),
+                itemCount: 25,
+                itemBuilder: (BuildContext ctx, index) {
+                  return PokeMonCard(
+                    pokemon: snapshot.data!,
+                  );
+                });
+          } else if (snapshot.hasError) {
+            return Text('${snapshot.error}');
+          }
+          // By default, show a loading spinner.
+          return const CircularProgressIndicator();
         });
   }
 
